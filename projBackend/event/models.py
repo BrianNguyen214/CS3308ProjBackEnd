@@ -8,10 +8,11 @@ class Event(models.Model):
     Date = models.CharField(max_length=500)
     Times = models.CharField(max_length=100)
     PictureLink = models.CharField(max_length=3000)
+    AdmissionFee = models.IntegerField()
     Description = models.CharField(max_length=40000)
     Location = models.CharField(max_length=3000)
     Phone = models.CharField(max_length=20)
-    AgeRestriction = models.IntegerField(max_length=20)
+    AgeRestriction = models.IntegerField()
     WebsiteLink = models.CharField(max_length=3000)
 
     def __str__(self):
@@ -24,6 +25,7 @@ class Event(models.Model):
             "Date": self.Date,
             "Times": self.Times,
             "PictureLink": self.PictureLink,
+            "AdmissionFee": self.AdmissionFee,
             "Description": self.Description,
             "Location": self.Location,
             "Phone": self.Phone,

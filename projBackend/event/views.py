@@ -10,15 +10,9 @@ from django.conf import settings
 
 @csrf_exempt
 def GetEventsByCategory(request, category):
-
-    allArticles = Article.objects.all()
-    theArticle = Article()
-    
+    print(category)
     try:
-        data = Event.objects.get(Category=category)
-        print(theParticularEvents)
-
-        data = Article.objects.all()
+        theParticularEvents = Event.objects.filter(Category=str(category))
         theEvents = []
 
         for event in theParticularEvents:
@@ -31,3 +25,17 @@ def GetEventsByCategory(request, category):
         return HttpResponse("It failed")
 
     return HttpResponse("It really failed")
+
+@csrf_exempt
+def GetAllEvents(request):
+    try:
+        data = Event.objects.all()
+        allEvents = []
+
+        for i in data:
+            allEvents.append(i.toJSON())
+
+        return JsonResponse({"These are all of the events": allEvents})
+
+    except:
+        print("Failed")
