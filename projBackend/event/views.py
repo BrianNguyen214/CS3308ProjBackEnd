@@ -114,11 +114,10 @@ def weekendDaysCalculator(currMonth, currDayOfWeek, currDayNum, currYear):
             SunDay = currDayNum
             SunYear = newYear
         
-        else:
-            currDayNum = currDayNum + 1
-            currDayOfWeek = currDayOfWeek + 1
-            if currDayOfWeek == 7:
-                currDayOfWeek = 0
+        currDayNum = currDayNum + 1
+        currDayOfWeek = currDayOfWeek + 1
+        if currDayOfWeek == 7:
+            currDayOfWeek = 0
     
     return [str(SatMonth), str(SatDay), str(SatYear), str(SunMonth), str(SunDay), str(SunYear)]
 
@@ -348,5 +347,19 @@ def GetFreeEvents(request):
 
     except:
         print("Failed")
+
+@csrf_exempt
+def GetSpecificEvent(request, eventTitle):
+
+    try:
+        theSpecificEvents = Event.objects.filter(Title=str(eventTitle))
+        actualSpecificEvent = theSpecificEvents[0]
+        convertedActualSpecificEvent = actualSpecificEvent.toJSON()
+        return JsonResponse({"Here's the specific event": convertedActualSpecificEvent})
+
+    except:
+        print("Failed")
+
+
 
 
