@@ -7,5 +7,5 @@ urlpatterns = [
     url(r'^particularEvents/(?P<category>[\w|\W]+)/$', GetEventsByCategory, name='activate'),
     url(r'^weekendEvents/$', GetWeekendEvents, name='activate'),
     url(r'^freeEvents/$', GetFreeEvents, name='activate'),
-    url(r'^specificEvent/(?P<eventTitle>[\w|\W]+)/$', GetSpecificEvent, name='activate'),
+    url(r'^specificEvent/(?P<token1>[0-9]+)/(?P<token2>[0-9]+)/(?P<token3>[\w|\W]+)/$', GetSpecificEvent, name='activate'),
 ]

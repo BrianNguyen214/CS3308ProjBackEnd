@@ -349,12 +349,11 @@ def GetFreeEvents(request):
         print("Failed")
 
 @csrf_exempt
-def GetSpecificEvent(request, eventTitle):
+def GetSpecificEvent(request, givenToken1, givenToken2, givenToken3):
 
     try:
-        theSpecificEvents = Event.objects.filter(Title=str(eventTitle))
-        actualSpecificEvent = theSpecificEvents[0]
-        convertedActualSpecificEvent = actualSpecificEvent.toJSON()
+        theSpecificEvent = Event.objects.filter(token1=str(givenToken1), token2=str(givenToken2), token3=givenToken3)
+        convertedActualSpecificEvent = theSpecificEvent.toJSON()
         return JsonResponse({"Here's the specific event": convertedActualSpecificEvent})
 
     except:
