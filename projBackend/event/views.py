@@ -7,6 +7,16 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import datetime
+from geopy.geocoders import Nominatim
+
+@csrf_exempt
+def GetEventLatAndLong(request, eventAddress):
+
+    nom = Nominatim()
+    location = nom.geocode(eventAddress)
+    print((location.latitude, location.longitude))
+    coords = [location.latitude, location.longitude]
+    return JsonResponse({"These are the event's coordinates": coords})
 
 
 @csrf_exempt
@@ -349,16 +359,44 @@ def GetFreeEvents(request):
         print("Failed")
 
 @csrf_exempt
-def GetSpecificEvent(request, givenToken1, givenToken2, givenToken3):
+def GetSpecificEvent(request, **kwargs):
+
+    #print(kwargs)
+    theSpecificEvent = Event()
 
     try:
-        theSpecificEvent = Event.objects.filter(token1=str(givenToken1), token2=str(givenToken2), token3=givenToken3)
-        convertedActualSpecificEvent = theSpecificEvent.toJSON()
-        return JsonResponse({"Here's the specific event": convertedActualSpecificEvent})
+        theSpecificEvent = Event.objects.get(token1=kwargs['token1'])
+        #print(theSpecificEvent)
+        convertedSpecificEvent = theSpecificEvent.toJSON()
+        #print(convertedSpecificEvent)
+        '''
+        print(str(convertedSpecificEvent['token1']))
+        print(str(convertedSpecificEvent['token2']))
+        print(str(convertedSpecificEvent['token3']))
+        print(str(kwargs['token1']))
+        print(str(kwargs['token2']))
+        print(str(kwargs['token3']))
+        '''
+        cond1 = False
+        cond2 = False
+        cond3 = False
+        if str(convertedSpecificEvent['token1']) == str(kwargs['token1']):
+            #print("A")
+            cond1 = True
+        if str(convertedSpecificEvent['token2']) == str(kwargs['token2']):
+            #print("B")
+            cond2 = True
+        if str(convertedSpecificEvent['token3']) == str(kwargs['token3']):
+            #print("C")
+            cond3 = True
+        
+        if cond1 and cond2 and cond3:
+            return JsonResponse({"Here's the specific event": convertedSpecificEvent})
 
     except:
         print("Failed")
-
+        return HttpResponse("Couldn't find event")
+    
 
 
 
